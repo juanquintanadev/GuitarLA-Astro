@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Post from '../components/Post.astro';
+
+const url = `${import.meta.env.PUBLIC_URL}/posts?populate=imagen`
+const respuesta = await fetch(url)
+const {data} = await respuesta.json()
+
+---
+
+<Layout 
+	title="BLOG"
+	description='Tienda de posts, cursos y blogs'
+>
+	<main class="contenedor">
+		<h1 class="heading">Nuestro Blog</h1>
+		<div class="grid">
+			{data?.length && data?.map(post => (
+				<Post 
+					titulo={post.attributes.titulo}
+					contenido={post.attributes.contenido}
+					imagen={post.attributes.imagen.data.attributes.url}
+					url={post.attributes.url}
+					createdAt={post.attributes.createdAt}
+				/>
+			))}
+		</div>
+	</main>
+</Layout>
+
+<style>
+	
+</style>
